@@ -22,5 +22,12 @@ type star struct{
 }
 
 func main() {
-	fmt.Println("Hello World")
+	// stars_arr is a slice storing the stars
+	stars_arr := []star{
+		star{coord{1.0, 1.0}, force{0, 0}, 1000000},
+		star{coord{3.0, 2.5}, force{0, 0}, 1000000},
+		star{coord{1.0, 4.5}, force{0, 0}, 1000000},
+	}
+
+	fmt.Println(stars_arr)
 }
