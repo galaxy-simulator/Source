@@ -46,3 +46,15 @@ func forces(stars_arr []star, nr int) {
 		}
 	}
 }
+
+// calc_all_forces iterates over all the stars in a given array and calculate the forces acting on all stars
+func calc_all_forces(arr []star) {
+
+	// Iterate over all the stars
+	for index, _ := range arr {
+
+		// Calculate the force acting inbetween the given star and all other stars
+		// This utilizes go-routines :D
+		go forces(arr, index)
+	}
+}
