@@ -3,7 +3,7 @@ package main
 import (
 	"math"
 	"fmt"
-	"ioutil"
+	"io/ioutil"
 )
 
 // forces_acting calculates the force inbetween the two given stars s1 and s2
