@@ -29,3 +29,20 @@ func forces_acting(s1 star, s2 star) force {
 
 	return F
 }
+
+// forces calculates the forces acting in between a given star and all the other stars in a given array.
+func forces(stars_arr []star, nr int) {
+
+	// Iterate over all the stars in the stars_arr
+	for index, _ := range stars_arr {
+
+		// If the current star is not the star itself
+		if index != nr {
+
+			// generate a new force and add it to the overall force of the star
+			fa := force_acting(stars_arr[nr], stars_arr[index])
+			stars_arr[nr].f.x += fa.x
+			stars_arr[nr].f.y += fa.y
+		}
+	}
+}
