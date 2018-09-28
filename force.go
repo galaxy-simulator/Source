@@ -58,3 +58,19 @@ func calc_all_forces(arr []star) {
 		go forces(arr, index)
 	}
 }
+
+// save_as_csv saves all the information stored in the given array to the given path.
+// If no error occures, the return value is nil
+func save_as_csv(stars_arr []star, path string) error {
+
+	var filename string = path + ".txt"
+	var content string
+
+	// Iterate over all the stars in the given array and add the info the the content that will be saved
+	for _, elem := range stars_arr {
+		content += fmt.Sprintf("%f,%f,%f,%f,%f\n", elem.c.x, elem.c.y, elem.f.x, elem.f.y, elem.mass)
+	}
+
+	// Return the error and write the data to disc
+	return ioutil.WriteFile(filename, []byte(content), 0600)
+}
