@@ -2,11 +2,13 @@ package main
 
 import (
 	"math"
+	"fmt"
+	"ioutil"
 )
 
 // forces_acting calculates the force inbetween the two given stars s1 and s2
 // The function return the force
-func forces_acting(s1 star, s2 star) force {
+func force_acting(s1 star, s2 star) force {
 
 	// Gravitational constant
 	var G float64 = 6.674 * math.Pow(10, -11)
