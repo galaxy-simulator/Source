@@ -1,3 +1,5 @@
+// Collection of functions handling printing specific stuff
+
 package main
 
 import (
@@ -10,10 +12,13 @@ func print_arr(arr []star) {
 
 	log.Printf("[+] Printing array")
 
-	// Iterate over all the elements in the array and print their content
+	fmt.Println("x\t\ty\t\t | Fx\t\tFy\t\t | mass\n")
+
+
 	for _, el := range arr{
-		fmt.Printf("%f\t%f\t|%f\t%f\t|%f\n", el.c.x, el.c.y, el.f.x, el.f.y, el.mass)
+		fmt.Printf("%.6f\t%.6f\t | %.6f\t%.6f\t | %.6f\n", el.c.x, el.c.y, el.f.x, el.f.y, el.mass)
 	}
 
-	fmt.Println("---")
+	fmt.Println("")
 }
+
