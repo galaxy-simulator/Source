@@ -1,3 +1,5 @@
+// Collection of functions calculating the force inbetween of stars
+
 package main
 
 import (
