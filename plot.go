@@ -1,4 +1,4 @@
-package plot
+package main
 
 import "fmt"
 
