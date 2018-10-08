@@ -88,9 +88,13 @@ func drawStars(dc *gg.Context, slice []structs.Star) {
 
 // Slice draws the stars and the forces acting on them and saves the result to the given path
 func Slice(slice []structs.Star, path string) {
+
+	// initialize the plot
 	dc := initializePlot()
-	dc.SetRGB(1, 1, 1)
-	dc.DrawCircle(0, 0, 100)
-	dc.Stroke()
-	dc.SavePNG(path)
+
+	// draw all the stars in the given slice
+	drawStars(dc, slice)
+
+	// save the plot to the given path
+	saveImage(dc, path)
 }
