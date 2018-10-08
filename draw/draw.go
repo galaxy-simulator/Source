@@ -2,6 +2,7 @@ package draw
 
 import (
 	"../structs"
+	"fmt"
 	"github.com/fogleman/gg"
 	"math"
 )
@@ -20,7 +21,7 @@ func initializePlot() *gg.Context {
 	dc.Clear()
 
 	// Invert the Y axis (positive values are on the top and right)
-	dc.InvertY()
+	// dc.InvertY()
 
 	// Set the coordinate midpoint to the middle of the image
 	dc.Translate(imageWidth/2, imageHeight/2)
@@ -57,7 +58,7 @@ func drawForce(dc *gg.Context, star structs.Star) {
 
 	// Use a sigmoid function to generate useful values for coloring the vectors according to their
 	// strength
-	var val = 1.0 / (1.0 + math.Exp(-vecLength/100000))
+	var val = 1.0 / (1.0 + math.Exp(-vecLength))
 
 	// Set the color to a blue / red
 	dc.SetRGB(val, 0, 1-val)
@@ -92,12 +93,18 @@ func drawStars(dc *gg.Context, slice []structs.Star) {
 // Slice draws the stars and the forces acting on them and saves the result to the given path
 func Slice(slice []structs.Star, path string) {
 
+	fmt.Printf("%-60s", "Plot init")
 	// initialize the plot
 	dc := initializePlot()
+	fmt.Printf("Done\n")
 
+	fmt.Printf("%-60s", "Drawing the Stars")
 	// draw all the stars in the given slice
 	drawStars(dc, slice)
+	fmt.Printf("Done\n")
 
+	fmt.Printf("%-60s", "Saving image")
 	// save the plot to the given path
 	saveImage(dc, path)
+	fmt.Printf("Done\n")
 }
