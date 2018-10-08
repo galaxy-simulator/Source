@@ -47,7 +47,7 @@ func vectorLength(force structs.Force) float64 {
 
 func drawForce(dc *gg.Context, star structs.Star) {
 	// controll the length of the vector
-	var scalingFactor float64 = 10
+	var scalingFactor float64 = 40
 
 	// Move the "cursor" to the start position of the vector
 	dc.MoveTo(star.C.X, star.C.Y)
@@ -76,12 +76,12 @@ func drawForce(dc *gg.Context, star structs.Star) {
 
 // drawStars draws all the stars in the given slice to the given context
 func drawStars(dc *gg.Context, slice []structs.Star) {
-	dc.SetRGB(1, 1, 1)
-
 	// draw all the forces in the given slice
 	for _, star := range slice {
 		drawForce(dc, star)
 	}
+
+	dc.SetRGB(1, 1, 1)
 
 	// draw all the stars in the given slice
 	for _, star := range slice {
