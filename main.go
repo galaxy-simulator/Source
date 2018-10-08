@@ -18,5 +18,5 @@ func main() {
 	fmt.Println(starsSlice)
 
 	// Calculate the forces acting inbetween all the stars in the starsSlice slice and star nr 0 in the starsSlice slice
-	fmt.Println(forces.Forces(starsSlice, 0))
+	fmt.Println(forces.CalcAllForces(starsSlice))
 }
