@@ -35,7 +35,7 @@ func saveImage(dc *gg.Context, path string) {
 
 // drawStar draws the given stars to the given context
 func drawStar(dc *gg.Context, star structs.Star) {
-	dc.DrawPoint(star.C.X, star.C.Y, 1)
+	dc.DrawPoint(star.C.X, star.C.Y, 2)
 	dc.Fill()
 	dc.Stroke()
 }
@@ -78,10 +78,12 @@ func drawForce(dc *gg.Context, star structs.Star) {
 func drawStars(dc *gg.Context, slice []structs.Star) {
 	dc.SetRGB(1, 1, 1)
 
+	// draw all the forces in the given slice
 	for _, star := range slice {
 		drawForce(dc, star)
 	}
 
+	// draw all the stars in the given slice
 	for _, star := range slice {
 		drawStar(dc, star)
 	}
