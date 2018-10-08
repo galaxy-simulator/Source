@@ -5,6 +5,7 @@ import (
 	"./draw"
 	"./forces"
 	"./structs"
+	"fmt"
 )
 
 func main() {
@@ -15,8 +16,15 @@ func main() {
 		{structs.Coord{X: 100, Y: 500}, structs.Force{0, 0}, 1000},
 	}
 
-	csv.Import("data/structure03.ita.uni-heidelberg.de_26635.csv", 0, 4000, starsSlice)
+	fmt.Printf("%-60s", "Opening the csv")
+	starsSlice = csv.Import("data/structure03.ita.uni-heidelberg.de_26635.csv", 0, 4000, starsSlice)
+	fmt.Printf("Done\n")
 
+	fmt.Printf("%-60s", "Calculate the forces")
 	forces.CalcAllForces(starsSlice)
+	fmt.Printf("Done\n")
+
+	fmt.Printf("%-60s", "Plotting the stars")
 	draw.Slice(starsSlice, "out.png")
+	fmt.Printf("Done\n")
 }
