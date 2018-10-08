@@ -19,6 +19,8 @@ func initializePlot() *gg.Context {
 	dc.SetRGB(0, 0, 0)
 	dc.Clear()
 
+	dc.InvertY()
+
 	// Set the coordinate midpoint to the middle of the image
 	dc.Translate(image_width/2, image_height/2)
 
