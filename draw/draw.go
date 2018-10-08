@@ -8,7 +8,6 @@ import (
 
 // initializePlot generates a new plot and returns the plot context
 func initializePlot() *gg.Context {
-
 	// Define the image size
 	const image_width = 8192
 	const image_height = 8192
@@ -20,6 +19,7 @@ func initializePlot() *gg.Context {
 	dc.SetRGB(0, 0, 0)
 	dc.Clear()
 
+	// Invert the Y axis (positive values are on the top and right)
 	dc.InvertY()
 
 	// Set the coordinate midpoint to the middle of the image
