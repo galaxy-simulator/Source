@@ -2,6 +2,8 @@ package forces
 
 import (
 	"../structs"
+	"fmt"
+	"gopkg.in/cheggaaa/pb.v1"
 	"math"
 )
 
@@ -54,13 +56,24 @@ func forces(stars_arr []structs.Star, nr int) structs.Force {
 	return force
 }
 
+// CalcAllForces calculates all the forces acting inbetween all the stars in the given starSlice slice and
+// returns a "new" slice contaning the forces
 func CalcAllForces(starSlice []structs.Star) []structs.Star {
 
 	// Define a new slice in which the stars (and the forces acting on them) should be saved
 	var new_slice []structs.Star
 
+	fmt.Printf("\n")
+
+	// Define a progres-bar
+	bar := pb.StartNew(len(starSlice)).Prefix("Stars done: ")
+	bar.SetWidth(80)
+
 	// Iterate over all the stars in the original slice
 	for index := range starSlice {
+
+		// Increment the progress-bar
+		bar.Increment()
 
 		// Calculate the force acting inbetween the given star and all other stars
 		// This utilizes go-routines :D
@@ -77,6 +90,9 @@ func CalcAllForces(starSlice []structs.Star) []structs.Star {
 		new_slice = append(new_slice, current_star)
 
 	}
+
+	// Print a newline after the progressbar
+	bar.FinishPrint("")
 
 	return new_slice
 }
