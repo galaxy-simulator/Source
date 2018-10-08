@@ -3,6 +3,7 @@ package draw
 import (
 	"../structs"
 	"github.com/fogleman/gg"
+	"math"
 )
 
 // initializePlot generates a new plot and returns the plot context
