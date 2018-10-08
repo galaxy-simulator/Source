@@ -31,7 +31,7 @@ func forceActing(s1 structs.Star, s2 structs.Star) structs.Force {
 }
 
 // forces calculates the forces acting in between a given star and all the other stars in a given array.
-func forces(stars_arr []structs.Star, nr int) structs.Force {
+func Forces(stars_arr []structs.Star, nr int) structs.Force {
 
 	var force structs.Force
 
