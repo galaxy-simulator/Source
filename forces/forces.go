@@ -31,7 +31,7 @@ func forceActing(s1 structs.Star, s2 structs.Star) structs.Force {
 }
 
 // forces calculates the forces acting in between a given star and all the other stars in a given array.
-func Forces(stars_arr []structs.Star, nr int) structs.Force {
+func forces(stars_arr []structs.Star, nr int) structs.Force {
 
 	var force structs.Force
 
@@ -52,4 +52,31 @@ func Forces(stars_arr []structs.Star, nr int) structs.Force {
 	}
 
 	return force
+}
+
+func CalcAllForces(starSlice []structs.Star) []structs.Star {
+
+	// Define a new slice in which the stars (and the forces acting on them) should be saved
+	var new_slice []structs.Star
+
+	// Iterate over all the stars in the original slice
+	for index := range starSlice {
+
+		// Calculate the force acting inbetween the given star and all other stars
+		// This utilizes go-routines :D
+		var force = forces(starSlice, index)
+
+		// create a new star
+		current_star := structs.Star{
+			structs.Coord{starSlice[index].C.X, starSlice[index].C.Y},
+			structs.Force{force.X, force.Y},
+			starSlice[index].Mass,
+		}
+
+		// append the new star to the new slice
+		new_slice = append(new_slice, current_star)
+
+	}
+
+	return new_slice
 }
