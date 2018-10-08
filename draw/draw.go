@@ -2,7 +2,6 @@ package draw
 
 import (
 	"../structs"
-	"fmt"
 	"github.com/fogleman/gg"
 	"math"
 )
@@ -93,18 +92,12 @@ func drawStars(dc *gg.Context, slice []structs.Star) {
 // Slice draws the stars and the forces acting on them and saves the result to the given path
 func Slice(slice []structs.Star, path string) {
 
-	fmt.Printf("%-60s", "Plot init")
 	// initialize the plot
 	dc := initializePlot()
-	fmt.Printf("Done\n")
 
-	fmt.Printf("%-60s", "Drawing the Stars")
 	// draw all the stars in the given slice
 	drawStars(dc, slice)
-	fmt.Printf("Done\n")
 
-	fmt.Printf("%-60s", "Saving image")
 	// save the plot to the given path
 	saveImage(dc, path)
-	fmt.Printf("Done\n")
 }
