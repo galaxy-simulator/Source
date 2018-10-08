@@ -23,7 +23,6 @@ func main() {
 
 	llog.Good("Calculate the forces acting")
 	forces.CalcAllForces(starsSlice)
-	fmt.Printf("Done\n")
 
 	llog.Good("Drawing the slice")
 	draw.Slice(starsSlice, "out.png")
