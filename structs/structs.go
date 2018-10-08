@@ -7,3 +7,9 @@ type Force struct {
 type Coord struct {
 	X, Y float64
 }
+
+type Star struct {
+	C    Coord
+	F    Force
+	Mass float64
+}
