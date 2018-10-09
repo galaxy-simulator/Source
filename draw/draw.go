@@ -35,7 +35,7 @@ func saveImage(dc *gg.Context, path string) {
 
 // drawStar draws the given stars to the given context
 func drawStar(dc *gg.Context, star structs.Star) {
-	dc.DrawPoint(star.C.X, star.C.Y, 2)
+	dc.DrawPoint(star.C.X/10, star.C.Y/10, 2)
 	dc.Fill()
 	dc.Stroke()
 }
@@ -47,10 +47,10 @@ func vectorLength(force structs.Force) float64 {
 
 func drawForce(dc *gg.Context, star structs.Star) {
 	// controll the length of the vector
-	var scalingFactor float64 = 40
+	var scalingFactor float64 = 32
 
 	// Move the "cursor" to the start position of the vector
-	dc.MoveTo(star.C.X, star.C.Y)
+	dc.MoveTo(star.C.X/10, star.C.Y/10)
 
 	// calculate the length of the vector
 	vecLength := vectorLength(star.F)
@@ -65,7 +65,7 @@ func drawForce(dc *gg.Context, star structs.Star) {
 	// trace the Vector
 	FxUnit := star.F.X / math.Abs(vecLength)
 	FyUnit := star.F.Y / math.Abs(vecLength)
-	dc.LineTo(star.C.X+(FxUnit*scalingFactor), star.C.Y+(FyUnit*scalingFactor))
+	dc.LineTo(star.C.X/10+(FxUnit*scalingFactor), star.C.Y/10+(FyUnit*scalingFactor))
 
 	// css
 	dc.SetLineWidth(2)

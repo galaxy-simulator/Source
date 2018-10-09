@@ -6,8 +6,8 @@ import (
 )
 
 // Good prints a "good" (green) message with a timestamp and the given message
-func Good(text string) {
-	fmt.Printf("%s\033[36m [+] \033[0m%-60s\t", currentTime(), text)
+func Good(before string) {
+	fmt.Printf("%s\033[36m [+] \033[0m%-60s\t", currentTime(), before)
 }
 
 // Bad prints a "good" (green) message with a timestamp and the given message
