@@ -20,7 +20,7 @@ func initializePlot() *gg.Context {
 	dc.Clear()
 
 	// Invert the Y axis (positive values are on the top and right)
-	// dc.InvertY()
+	dc.InvertY()
 
 	// Set the coordinate midpoint to the middle of the image
 	dc.Translate(imageWidth/2, imageHeight/2)
@@ -35,7 +35,7 @@ func saveImage(dc *gg.Context, path string) {
 
 // drawStar draws the given stars to the given context
 func drawStar(dc *gg.Context, star structs.Star) {
-	dc.DrawPoint(star.C.X/10, star.C.Y/10, 2)
+	dc.DrawPoint(star.C.X/50, star.C.Y/50, 2)
 	dc.Fill()
 	dc.Stroke()
 }
@@ -47,17 +47,17 @@ func vectorLength(force structs.Force) float64 {
 
 func drawForce(dc *gg.Context, star structs.Star) {
 	// controll the length of the vector
-	var scalingFactor float64 = 32
+	var scalingFactor float64 = 15
 
 	// Move the "cursor" to the start position of the vector
-	dc.MoveTo(star.C.X/10, star.C.Y/10)
+	dc.MoveTo(star.C.X/50, star.C.Y/50)
 
 	// calculate the length of the vector
 	vecLength := vectorLength(star.F)
 
 	// Use a sigmoid function to generate useful values for coloring the vectors according to their
 	// strength
-	var val = 1.0 / (1.0 + math.Exp(-vecLength))
+	var val = 1.0 / (1.0 + math.Exp(-vecLength*scalingFactor/2))
 
 	// Set the color to a blue / red
 	dc.SetRGB(val, 0, 1-val)
@@ -65,10 +65,12 @@ func drawForce(dc *gg.Context, star structs.Star) {
 	// trace the Vector
 	FxUnit := star.F.X / math.Abs(vecLength)
 	FyUnit := star.F.Y / math.Abs(vecLength)
-	dc.LineTo(star.C.X/10+(FxUnit*scalingFactor), star.C.Y/10+(FyUnit*scalingFactor))
 
+	dc.LineTo(star.C.X/50+(FxUnit*scalingFactor), star.C.Y/50+(FyUnit*scalingFactor))
+	// dc.LineTo(star.C.X/100 + (star.F.X * scalingFactor), star.C.Y/100 + (star.F.Y * scalingFactor))
+	//
 	// css
-	dc.SetLineWidth(2)
+	dc.SetLineWidth(3)
 
 	// And finally: DRAW (stroke) the vector
 	dc.Stroke()
@@ -97,6 +99,16 @@ func Slice(slice []structs.Star, path string) {
 
 	// draw all the stars in the given slice
 	drawStars(dc, slice)
+
+	dc.SetRGB(1, 1, 1)
+
+	// drawing the 4 big stars as bigger white dots
+	dc.DrawCircle(600, 600, 5)
+	dc.DrawCircle(-600, 600, 5)
+	dc.DrawCircle(-600, 0, 5)
+	dc.DrawCircle(600, -600, 5)
+
+	dc.Fill()
 
 	// save the plot to the given path
 	saveImage(dc, path)

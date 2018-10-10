@@ -10,27 +10,31 @@ import (
 )
 
 func main() {
+	var threads int = 8
+
 	// the slice starsSlice stores the star structures
 	starsSlice := []structs.Star{
-		{structs.Coord{X: 100, Y: 100}, structs.Force{0, 0}, 1000},
-		{structs.Coord{X: 200, Y: 300}, structs.Force{0, 0}, 1000},
-		{structs.Coord{X: 100, Y: 500}, structs.Force{0, 0}, 1000},
-		{structs.Coord{X: -200000.0, Y: 8000.0}, structs.Force{X: 0, Y: 0}, 8000000000},
-		{structs.Coord{X: 200000.0, Y: 0.0}, structs.Force{X: 0, Y: 0}, 8000000000},
-		{structs.Coord{X: 0.0, Y: 200000}, structs.Force{X: 0, Y: 0}, 8000000000},
-		{structs.Coord{X: 20000.0, Y: 80000}, structs.Force{X: 0, Y: 0}, 4000000},
+		{structs.Coord{X: 30000, Y: 30000}, structs.Force{0, 0}, 500000000},
+		{structs.Coord{X: -30000, Y: 30000}, structs.Force{0, 0}, 500000000},
+		{structs.Coord{X: -30000, Y: 0}, structs.Force{0, 0}, 500000000},
+		{structs.Coord{X: 30000, Y: -30000}, structs.Force{0, 0}, 500000000},
 	}
+	// var starsSlice []structs.Star
 
-	llog.Good("Opening the csv")
-	starsSlice = csv.Import("data/structure03.ita.uni-heidelberg.de_26635.csv", 0, 2000, starsSlice)
-	// starsSlice = csv.Import("data/U_ALL.csv", 0, 2000, starsSlice)
-	fmt.Printf("Done\n")
+	// llog.Good("Opening the csv")
+	// starsSlice = csv.Import("data/structure03.ita.uni-heidelberg.de_26635.csv", 0, 2000, starsSlice)
+	starsSlice = csv.Import("data/U_ALL.csv", 0, 50000, starsSlice)
+	// fmt.Printf("Done\n")
 
-	llog.Good("Calculate the acting forces")
-	forces.CalcAllForces(starsSlice)
+	// llog.Good("Calculate the acting forces")
+	starsSlice = forces.CalcAllForces(starsSlice, threads)
+	// starsSlice = forces.CalcAllForcesOld(starsSlice)
 
-	// Filename without suffix and extension
-	path := "out"
+	// for _, e := range starsSlice {
+	// 	fmt.Printf("%f %f | %f %f | %f\n", e.C.X, e.C.Y, e.F.X, e.F.Y, e.Mass)
+	// }
+
+	path := "out_2.png"
 
 	llog.Good(fmt.Sprintf("draw the slice and save it to %s", path))
 	draw.Slice(starsSlice, path)
