@@ -56,6 +56,28 @@ func forces(stars_arr []structs.Star, nr int) structs.Force {
 	return force
 }
 
+// forcesThread calculates the forces acting on a given amount of stars in a given range for a given slice of stars
+// as a go-routine
+func forcesThread(starSlice []structs.Star, localRangeStart int, localRangeEnd int, channel chan structs.Star) {
+
+	// iterate over the given range
+	for index := localRangeStart; index < localRangeEnd; index++ {
+
+		// Calculate the force acting inbetween the given star and all other stars
+		var force = forces(starSlice, index)
+
+		// create a new star
+		newStar := structs.Star{
+			structs.Coord{starSlice[index].C.X, starSlice[index].C.Y},
+			structs.Force{force.X, force.Y},
+			starSlice[index].Mass,
+		}
+
+		// push the new Star into the channel
+		channel <- newStar
+	}
+}
+
 // CalcAllForces calculates all the forces acting inbetween all the stars in the given starSlice slice and
 // returns a "new" slice contaning the forces
 func CalcAllForces(starSlice []structs.Star) []structs.Star {
