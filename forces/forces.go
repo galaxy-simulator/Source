@@ -79,41 +79,95 @@ func forcesThread(starSlice []structs.Star, localRangeStart int, localRangeEnd i
 
 // CalcAllForces calculates all the forces acting inbetween all the stars in the given starSlice slice and
 // returns a "new" slice contaning the forces
-func CalcAllForces(starSlice []structs.Star) []structs.Star {
-
-	// Define a new slice in which the stars (and the forces acting on them) should be saved
-	var new_slice []structs.Star
-
+func CalcAllForces(starSlice []structs.Star, threads int) []structs.Star {
 	fmt.Printf("\n")
 
-	// Define a progres-bar
-	bar := pb.StartNew(len(starSlice)).Prefix("Stars done: ")
+	// create a channel for bundling the stars generaten in the go-routines
+	channel := make(chan structs.Star, 1000)
+
+	sliceLength := len(starSlice)
+
+	// calculate the local range
+	// Example: 100 stars with 4 threads = 25 stars / thread
+	localRangeLen := sliceLength / threads
+
+	// generate a new slice for storing the stars
+	var newSlice []structs.Star
+
+	// start n go threads
+	for i := 0; i < threads; i++ {
+
+		// define the local range
+		localRangeStart := i * localRangeLen
+		localRangeEnd := (i * localRangeLen) + localRangeLen
+
+		fmt.Printf("starting worker nr. %d, processing %d stars\n", i, localRangeEnd-localRangeStart)
+
+		// calculate the forces for all the stars in the given slice in the given range and return them using the
+		// given channel
+		go forcesThread(starSlice, localRangeStart, localRangeEnd, channel)
+	}
+
+	fmt.Printf("\nsliceLength = %d\n", sliceLength)
+	fmt.Printf("localRangeLen = %d\n", localRangeLen)
+
+	// Handle errors (10004 stars, but 1250 stars per thread, so 4 stars are not calculate and block the queue)
+	if sliceLength > localRangeLen {
+
+		// Calculate the amount of stars and their range
+		remainingStars := sliceLength - (localRangeLen * threads)
+		localRangeEnd := ((threads - 1) * localRangeLen) + localRangeLen
+
+		// Run the Thread
+		go forcesThread(starSlice, localRangeEnd, localRangeEnd+remainingStars, channel)
+	}
+
+	// Initialize a new progress bar
+	fmt.Printf("len(starSlice) = %d", len(starSlice))
+	bar := pb.New(len(starSlice)).Prefix("Stars: ")
+
+	bar.Start()
+
+	// iterate over the amount of stars
+	for i := 0; i < sliceLength; i++ {
+
+		// block until a star is finisehd
+		var newStar structs.Star = <-channel
+
+		// append the star from the channel to the newSlice for returning in the end
+		newSlice = append(newSlice, newStar)
+
+		// increment the progress bar and the counter
+		bar.Increment()
+	}
+
+	bar.FinishPrint("Done Calculating the forces! Taking the rest of the session off!")
+
+	return newSlice
+}
+
+// old deprecated function (no threading)
+func CalcAllForcesOld(starSlice []structs.Star) []structs.Star {
+	var newSlice []structs.Star
+
+	bar := pb.StartNew(len(starSlice)).Prefix("Stars Done: ")
 	bar.SetWidth(80)
 
-	// Iterate over all the stars in the original slice
 	for index := range starSlice {
-
-		// Increment the progress-bar
 		bar.Increment()
 
-		// Calculate the force acting inbetween the given star and all other stars
-		// This utilizes go-routines :D
 		var force = forces(starSlice, index)
 
-		// create a new star
-		current_star := structs.Star{
+		newStar := structs.Star{
 			structs.Coord{starSlice[index].C.X, starSlice[index].C.Y},
 			structs.Force{force.X, force.Y},
 			starSlice[index].Mass,
 		}
 
-		// append the new star to the new slice
-		new_slice = append(new_slice, current_star)
-
+		newSlice = append(newSlice, newStar)
 	}
 
-	// Print a newline after the progressbar
 	bar.FinishPrint("")
 
-	return new_slice
+	return newSlice
 }
