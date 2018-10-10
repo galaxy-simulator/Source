@@ -20,11 +20,11 @@ func forceActing(s1 structs.Star, s2 structs.Star) structs.Force {
 	rhat := structs.Force{s2.C.X - s1.C.X, s2.C.Y - s1.C.Y}
 
 	// Calculate how strong the star is affected
-	var F_scalar = G * (s1.Mass * s2.Mass) / math.Pow(math.Abs(r21), 2)
+	var FScalar = G * (s1.Mass * s2.Mass) / math.Pow(math.Abs(r21), 2)
 
 	// Calculate the overall force by combining the scalar and the vector
-	var Fx = F_scalar * rhat.X
-	var Fy = F_scalar * rhat.Y
+	var Fx = FScalar * rhat.X
+	var Fy = FScalar * rhat.Y
 
 	// Pack the forces in a force structur
 	F := structs.Force{Fx, Fy}
@@ -36,7 +36,6 @@ func forceActing(s1 structs.Star, s2 structs.Star) structs.Force {
 func forces(stars_arr []structs.Star, nr int) structs.Force {
 
 	var force structs.Force
-
 	// Iterate over all the stars in the stars_arr
 	for index := range stars_arr {
 
