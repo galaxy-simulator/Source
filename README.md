@@ -11,7 +11,8 @@ Simple, just:
 $ go build .
 
 $ ./Source
-21:52:10 [+] Opening the csv                                             	21:52:10 [+] Calculate the acting forces                                 	
+21:52:10 [+] Opening the csv
+21:52:10 [+] Calculate the acting forces                                 	
 starting worker nr. 0, processing 6250 stars
 starting worker nr. 1, processing 6250 stars
 starting worker nr. 2, processing 6250 stars
