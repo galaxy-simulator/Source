@@ -22,7 +22,8 @@ starting worker nr. 5, processing 6250 stars
 starting worker nr. 6, processing 6250 stars
 starting worker nr. 7, processing 6250 stars
 
-sliceLength = 50004
-localRangeLen = 6250
+Stars:  50004 / 50004 [====================================================================] 100.00% 2m2s
+Done Calculating the forces! Taking the rest of the session off!
+22:09:44 [+] draw the slice and save it to out_2.png
 ...
 ```
