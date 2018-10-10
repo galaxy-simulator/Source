@@ -108,9 +108,6 @@ func CalcAllForces(starSlice []structs.Star, threads int) []structs.Star {
 		go forcesThread(starSlice, localRangeStart, localRangeEnd, channel)
 	}
 
-	fmt.Printf("\nsliceLength = %d\n", sliceLength)
-	fmt.Printf("localRangeLen = %d\n", localRangeLen)
-
 	// Handle errors (10004 stars, but 1250 stars per thread, so 4 stars are not calculate and block the queue)
 	if sliceLength > localRangeLen {
 
@@ -123,7 +120,6 @@ func CalcAllForces(starSlice []structs.Star, threads int) []structs.Star {
 	}
 
 	// Initialize a new progress bar
-	fmt.Printf("len(starSlice) = %d", len(starSlice))
 	bar := pb.New(len(starSlice)).Prefix("Stars: ")
 
 	bar.Start()

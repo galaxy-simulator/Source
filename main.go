@@ -20,15 +20,15 @@ func main() {
 		{structs.Coord{X: 30000, Y: -30000}, structs.Force{0, 0}, 500000000},
 	}
 
-	llog.Good("Opening the csv")
+	llog.Good("Opening the csv\n")
 	starsSlice = csv.Import("data/U_ALL.csv", 0, 50000, starsSlice)
 
-	llog.Good("Calculate the acting forces")
+	llog.Good("Calculate the acting forces\n")
 	starsSlice = forces.CalcAllForces(starsSlice, threads)
 
 	path := "out_2.png"
 
-	llog.Good(fmt.Sprintf("draw the slice and save it to %s", path))
+	llog.Good(fmt.Sprintf("draw the slice and save it to %s\n", path))
 	draw.Slice(starsSlice, path)
 
 }
