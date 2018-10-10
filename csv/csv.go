@@ -56,7 +56,7 @@ func Import(path string, start int, end int, slice []structs.Star) []structs.Sta
 		tempStar := structs.Star{
 			structs.Coord{x, y},
 			structs.Force{0, 0},
-			1000000,
+			50000,
 		}
 
 		// Add the Temporary star to the slice
