@@ -1,8 +1,10 @@
 # Source
 
-Source Code
+## Example Image
 
-Building
+![Example Image](https://git.darknebu.la/GalaxySimulator/Source/raw/master/example_image_cropped.png)
+
+## Building
 
 Simple, just:
 ```
