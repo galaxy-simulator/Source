@@ -16,10 +16,10 @@ func main() {
 
 	// the slice starsSlice stores the star structures
 	starsSlice := []structs.Star{
-		{structs.Coord{X: 30000, Y: 30000}, structs.Force{0, 0}, 500000000},
-		{structs.Coord{X: -30000, Y: 30000}, structs.Force{0, 0}, 500000000},
-		{structs.Coord{X: -30000, Y: 0}, structs.Force{0, 0}, 500000000},
-		{structs.Coord{X: 30000, Y: -30000}, structs.Force{0, 0}, 500000000},
+		{structs.Coord{X: 30000, Y: 30000}, structs.Force{X: 0, Y: 0}, 500000000},
+		{structs.Coord{X: -30000, Y: 30000}, structs.Force{X: 0, Y: 0}, 500000000},
+		{structs.Coord{X: -30000, Y: 0}, structs.Force{X: 0, Y: 0}, 500000000},
+		{structs.Coord{X: 30000, Y: -30000}, structs.Force{X: 0, Y: 0}, 500000000},
 	}
 
 	llog.Good("Opening the csv")
