@@ -1,6 +1,7 @@
 package forces
 
 import (
+	"../llog"
 	"../structs"
 	"fmt"
 	"gopkg.in/cheggaaa/pb.v1"
@@ -80,8 +81,6 @@ func forcesThread(starSlice []structs.Star, localRangeStart int, localRangeEnd i
 // CalcAllForces calculates all the forces acting inbetween all the stars in the given starSlice slice and
 // returns a "new" slice contaning the forces
 func CalcAllForces(starSlice []structs.Star, threads int) []structs.Star {
-	fmt.Printf("\n")
-
 	// create a channel for bundling the stars generaten in the go-routines
 	channel := make(chan structs.Star, 1000)
 
@@ -94,6 +93,8 @@ func CalcAllForces(starSlice []structs.Star, threads int) []structs.Star {
 	// generate a new slice for storing the stars
 	var newSlice []structs.Star
 
+	llog.Good(fmt.Sprintf("Starting %d workers, each processing %d stars", threads, localRangeLen))
+
 	// start n go threads
 	for i := 0; i < threads; i++ {
 
@@ -101,7 +102,7 @@ func CalcAllForces(starSlice []structs.Star, threads int) []structs.Star {
 		localRangeStart := i * localRangeLen
 		localRangeEnd := (i * localRangeLen) + localRangeLen
 
-		fmt.Printf("starting worker nr. %d, processing %d stars\n", i, localRangeEnd-localRangeStart)
+		// fmt.Printf("starting worker nr. %d, processing %d stars\n", i, localRangeEnd-localRangeStart)
 
 		// calculate the forces for all the stars in the given slice in the given range and return them using the
 		// given channel
@@ -116,7 +117,8 @@ func CalcAllForces(starSlice []structs.Star, threads int) []structs.Star {
 		localRangeEnd := ((threads - 1) * localRangeLen) + localRangeLen
 
 		// Run the Thread
-		go forcesThread(starSlice, localRangeEnd, localRangeEnd+remainingStars, channel)
+		// go forcesThread(starSlice, localRangeEnd, localRangeEnd+remainingStars, channel)
+		forcesThread(starSlice, localRangeEnd, localRangeEnd+remainingStars, channel)
 	}
 
 	// Initialize a new progress bar
@@ -137,7 +139,33 @@ func CalcAllForces(starSlice []structs.Star, threads int) []structs.Star {
 		bar.Increment()
 	}
 
-	bar.FinishPrint("Done Calculating the forces! Taking the rest of the session off!")
+	bar.Finish()
+
+	return newSlice
+}
+
+// Calculate the new positions of the stars using the
+func NextTimestep(starSlice []structs.Star, deltat int) []structs.Star {
+	// create a new slice for storing the "new" stars
+	var newSlice []structs.Star
+
+	// iterate over all the stars in the old slice
+	for index := range starSlice {
+
+		// calculate the new position
+		newX := starSlice[index].C.X + starSlice[index].F.X*float64(deltat)
+		newY := starSlice[index].C.Y + starSlice[index].F.Y*float64(deltat)
+
+		// assemble the new star
+		newStar := structs.Star{
+			C:    structs.Coord{X: newX, Y: newY},
+			F:    structs.Force{},
+			Mass: 50000,
+		}
+
+		// append the new star to the newSlice
+		newSlice = append(newSlice, newStar)
+	}
 
 	return newSlice
 }
