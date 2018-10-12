@@ -12,7 +12,8 @@ import (
 // The function return the force
 func forceActing(s1 structs.Star, s2 structs.Star) structs.Force {
 	// Gravitational constant
-	var G = 6.674 * math.Pow(10, -11)
+	// var G = 6.674 * math.Pow(10, -11)
+	var G float64 = 6.674e-11
 
 	// Distance between the stars
 	var r21 = math.Sqrt(math.Pow(s2.C.X-s1.C.X, 2) + math.Pow(s2.C.Y-s1.C.Y, 2))
