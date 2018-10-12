@@ -169,29 +169,3 @@ func NextTimestep(starSlice []structs.Star, deltat int) []structs.Star {
 
 	return newSlice
 }
-
-// old deprecated function (no threading)
-func CalcAllForcesOld(starSlice []structs.Star) []structs.Star {
-	var newSlice []structs.Star
-
-	bar := pb.StartNew(len(starSlice)).Prefix("Stars Done: ")
-	bar.SetWidth(80)
-
-	for index := range starSlice {
-		bar.Increment()
-
-		var force = forces(starSlice, index)
-
-		newStar := structs.Star{
-			structs.Coord{starSlice[index].C.X, starSlice[index].C.Y},
-			structs.Force{force.X, force.Y},
-			starSlice[index].Mass,
-		}
-
-		newSlice = append(newSlice, newStar)
-	}
-
-	bar.FinishPrint("")
-
-	return newSlice
-}
