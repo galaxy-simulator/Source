@@ -43,19 +43,23 @@ func Import(path string, start int, end int, slice []structs.Star) []structs.Sta
 	for linenr, line := range lines[start:end] {
 		x, errx := strconv.ParseFloat(line[0], 64)
 		y, erry := strconv.ParseFloat(line[1], 64)
+		z, errz := strconv.ParseFloat(line[2], 64)
 
 		// Handle errors
 		if errx != nil {
 			log.Printf("error reading value from csv in line nr. %d (%s)", linenr, errx)
 		}
-		if errx != nil {
+		if erry != nil {
 			log.Printf("error reading value from csv in line nr. %d (%s)", linenr, erry)
+		}
+		if errz != nil {
+			log.Printf("error reading value from csv in line nr. %d (%s)", linenr, errz)
 		}
 
 		// Create a temporary star for assembling the star
 		tempStar := structs.Star{
-			structs.Coord{x, y},
-			structs.Force{0, 0},
+			structs.Coord{X: x, Y: y, Z: z},
+			structs.Force{X: 0, Y: 0, Z: 0},
 			50000,
 		}
 
