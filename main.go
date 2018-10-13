@@ -11,16 +11,10 @@ import (
 
 func main() {
 	var threads int = 8
-	var path1 string = "out_0.png"
-	var frames int = 250
+	var frames int = 1
 
 	// the slice starsSlice stores the star structures
-	starsSlice := []structs.Star{
-		{structs.Coord{X: 30000, Y: 30000}, structs.Force{X: 0, Y: 0}, 500000000},
-		{structs.Coord{X: -30000, Y: 30000}, structs.Force{X: 0, Y: 0}, 500000000},
-		{structs.Coord{X: -30000, Y: 0}, structs.Force{X: 0, Y: 0}, 500000000},
-		{structs.Coord{X: 30000, Y: -30000}, structs.Force{X: 0, Y: 0}, 500000000},
-	}
+	starsSlice := []structs.Star{}
 
 	llog.Good("Opening the csv")
 	starsSlice = csv.Import("data/U_ALL.csv", 0, 25000, starsSlice)
