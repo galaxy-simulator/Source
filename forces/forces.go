@@ -12,14 +12,13 @@ import (
 // The function return the force
 func forceActing(s1 structs.Star, s2 structs.Star) structs.Force {
 	// Gravitational constant
-	// var G = 6.674 * math.Pow(10, -11)
 	var G float64 = 6.674e-11
 
 	// Distance between the stars
-	var r21 = math.Sqrt(math.Pow(s2.C.X-s1.C.X, 2) + math.Pow(s2.C.Y-s1.C.Y, 2))
+	var r21 = math.Sqrt(math.Pow(s2.C.X-s1.C.X, 2) + math.Pow(s2.C.Y-s1.C.Y, 2) + math.Pow(s2.C.Z-s1.C.Z, 2))
 
 	// Unit vector pointing from s1 to s2
-	rhat := structs.Force{s2.C.X - s1.C.X, s2.C.Y - s1.C.Y}
+	rhat := structs.Force{s2.C.X - s1.C.X, s2.C.Y - s1.C.Y, s2.C.Z - s1.C.Z}
 
 	// Calculate how strong the star is affected
 	var FScalar = G * (s1.Mass * s2.Mass) / math.Pow(math.Abs(r21), 2)
@@ -27,9 +26,10 @@ func forceActing(s1 structs.Star, s2 structs.Star) structs.Force {
 	// Calculate the overall force by combining the scalar and the vector
 	var Fx = FScalar * rhat.X
 	var Fy = FScalar * rhat.Y
+	var Fz = FScalar * rhat.Z
 
 	// Pack the forces in a force structur
-	F := structs.Force{Fx, Fy}
+	F := structs.Force{Fx, Fy, Fz}
 
 	return F
 }
@@ -48,9 +48,11 @@ func forces(stars_arr []structs.Star, nr int) structs.Force {
 			fa := forceActing(stars_arr[nr], stars_arr[index])
 			stars_arr[nr].F.X += fa.X
 			stars_arr[nr].F.Y += fa.Y
+			stars_arr[nr].F.Z += fa.Z
 
 			force.X += fa.X
 			force.Y += fa.Y
+			force.Z += fa.Z
 		}
 	}
 
@@ -69,8 +71,8 @@ func forcesThread(starSlice []structs.Star, localRangeStart int, localRangeEnd i
 
 		// create a new star
 		newStar := structs.Star{
-			structs.Coord{starSlice[index].C.X, starSlice[index].C.Y},
-			structs.Force{force.X, force.Y},
+			structs.Coord{starSlice[index].C.X, starSlice[index].C.Y, starSlice[index].C.Z},
+			structs.Force{force.X, force.Y, force.Z},
 			starSlice[index].Mass,
 		}
 
@@ -156,10 +158,11 @@ func NextTimestep(starSlice []structs.Star, deltat int) []structs.Star {
 		// calculate the new position
 		newX := starSlice[index].C.X + starSlice[index].F.X*float64(deltat)
 		newY := starSlice[index].C.Y + starSlice[index].F.Y*float64(deltat)
+		newZ := starSlice[index].C.Z + starSlice[index].F.Z*float64(deltat)
 
 		// assemble the new star
 		newStar := structs.Star{
-			C:    structs.Coord{X: newX, Y: newY},
+			C:    structs.Coord{X: newX, Y: newY, Z: newZ},
 			F:    structs.Force{},
 			Mass: 50000,
 		}
