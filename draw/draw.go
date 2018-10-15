@@ -33,41 +33,32 @@ func saveImage(dc *gg.Context, path string) {
 	dc.SavePNG(path)
 }
 
-// drawStar2D draws the given stars to the given context
-func drawStar2D(dc *gg.Context, star structs.Star2D) {
-	// the radius can be any value inbetween 1e4 and 1e5
+// drawStar draws the given stars to the given context
+func drawStar(dc *gg.Context, star structs.Star2D) {
 
-	// Define the default star radius as 1 and change it according to the stars mass
-	radius := 1
-	switch {
-	case star.Mass < 10000:
-		radius = 1
-	case star.Mass < 50000 && star.Mass > 10000:
-		radius = 2
-	case star.Mass < 100000 && star.Mass > 50000:
-		radius = 3
+	// set radius of the star to 2
+	R := 2.0
+
+	// if the star has a greater mass than the default 5E4, it's radius is increased to 5
+	if star.M > 5E4 {
+		R = 5
 	}
 
-	// Draw the star
-	dc.DrawPoint(star.C.X/50, star.C.Y/50, float64(radius))
+	// draw the star / point
+	dc.DrawPoint(star.C.X/50, star.C.Y/50, R)
 	dc.Fill()
 	dc.Stroke()
 }
 
-// vectorLength calculates the length of the given vector
-func vectorLength(force structs.Force) float64 {
-	return math.Sqrt(math.Pow(force.X, 2) + math.Pow(force.Y, 2))
-}
-
-func drawForce(dc *gg.Context, star structs.Star2D) {
-	// controll the length of the vector
+func drawVelocity(dc *gg.Context, star structs.Star2D) {
+	// scaling factor for a better view of the velocity difference
 	var scalingFactor float64 = 15
 
 	// Move the "cursor" to the start position of the vector
 	dc.MoveTo(star.C.X/50, star.C.Y/50)
 
 	// calculate the length of the vector
-	vecLength := vectorLength(star.F)
+	vecLength := star.V.GetLength()
 
 	// Use a sigmoid function to generate useful values for coloring the vectors according to their
 	// strength
@@ -76,31 +67,31 @@ func drawForce(dc *gg.Context, star structs.Star2D) {
 	// Set the color to a blue / red
 	dc.SetRGB(val, 0, 1-val)
 
-	// trace the Vector
-	FxUnit := star.F.X / math.Abs(vecLength)
-	FyUnit := star.F.Y / math.Abs(vecLength)
+	// calculate the direction vector
+	FUnit := (&star.V).Divide(vecLength)
 
-	dc.LineTo(star.C.X/50+(FxUnit*scalingFactor), star.C.Y/50+(FyUnit*scalingFactor))
+	// set end-position of the vector line
+	dc.LineTo(star.C.X/50+(FUnit.X*scalingFactor), star.C.Y/50+(FUnit.Y*scalingFactor))
 
-	// css
+	// set line width
 	dc.SetLineWidth(3)
 
 	// And finally: DRAW (stroke) the vector
 	dc.Stroke()
 }
 
-// drawStar2Ds draws all the stars in the given slice to the given context
-func drawStars2D(dc *gg.Context, slice []structs.Star2D) {
-	// draw all the forces in the given slice
+// drawStars draws all the stars in the given slice to the given context
+func drawStars(dc *gg.Context, slice []structs.Star2D) {
+	// draw all the velocity in the given slice
 	for _, star := range slice {
-		drawForce(dc, star)
+		drawVelocity(dc, star)
 	}
 
 	dc.SetRGB(1, 1, 1)
 
 	// draw all the stars in the given slice
 	for _, star := range slice {
-		drawStar2D(dc, star)
+		drawStar(dc, star)
 	}
 }
 
@@ -111,7 +102,17 @@ func Slice(slice []structs.Star2D, path string) {
 	dc := initializePlot()
 
 	// draw all the stars in the given slice
-	drawStars2D(dc, slice)
+	drawStars(dc, slice)
+
+	dc.SetRGB(1, 1, 1)
+
+	// drawing the 4 big stars as bigger white dots
+	//dc.DrawCircle(600, 600, 5)
+	//dc.DrawCircle(-600, 600, 5)
+	//dc.DrawCircle(-600, 0, 5)
+	//dc.DrawCircle(600, -600, 5)
+
+	dc.Fill()
 
 	// save the plot to the given path
 	saveImage(dc, path)
