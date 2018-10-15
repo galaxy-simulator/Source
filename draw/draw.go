@@ -35,7 +35,21 @@ func saveImage(dc *gg.Context, path string) {
 
 // drawStar draws the given stars to the given context
 func drawStar(dc *gg.Context, star structs.Star) {
-	dc.DrawPoint(star.C.X/50, star.C.Y/50, 2)
+	// the radius can be any value inbetween 1e4 and 1e5
+
+	// Define the default star radius as 1 and change it according to the stars mass
+	radius := 1
+	switch {
+	case star.Mass < 10000:
+		radius = 1
+	case star.Mass < 50000 && star.Mass > 10000:
+		radius = 2
+	case star.Mass < 100000 && star.Mass > 50000:
+		radius = 3
+	}
+
+	// Draw the star
+	dc.DrawPoint(star.C.X/50, star.C.Y/50, float64(radius))
 	dc.Fill()
 	dc.Stroke()
 }

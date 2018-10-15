@@ -105,8 +105,6 @@ func CalcAllForces(starSlice []structs.Star, threads int) []structs.Star {
 		localRangeStart := i * localRangeLen
 		localRangeEnd := (i * localRangeLen) + localRangeLen
 
-		// fmt.Printf("starting worker nr. %d, processing %d stars\n", i, localRangeEnd-localRangeStart)
-
 		// calculate the forces for all the stars in the given slice in the given range and return them using the
 		// given channel
 		go forcesThread(starSlice, localRangeStart, localRangeEnd, channel)
@@ -164,7 +162,7 @@ func NextTimestep(starSlice []structs.Star, deltat int) []structs.Star {
 		newStar := structs.Star{
 			C:    structs.Coord{X: newX, Y: newY, Z: newZ},
 			F:    structs.Force{},
-			Mass: 50000,
+			Mass: starSlice[index].Mass,
 		}
 
 		// append the new star to the newSlice
