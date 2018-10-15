@@ -4,8 +4,10 @@ import (
 	"../structs"
 	"encoding/csv"
 	"log"
+	"math/rand"
 	"os"
 	"strconv"
+	"time"
 )
 
 // openStarCSV opens the file at the given path and reads its content. It then returns the content inform of a slice
@@ -40,6 +42,10 @@ func openStarCSV(path string) [][]string {
 func Import(path string, start int, end int, slice []structs.Star) []structs.Star {
 	lines := openStarCSV(path)
 
+	// seed the random number generator
+	rand.Seed(time.Now().UTC().UnixNano())
+
+	// iterate over all the lines in the given range
 	for linenr, line := range lines[start:end] {
 		x, errx := strconv.ParseFloat(line[0], 64)
 		y, erry := strconv.ParseFloat(line[1], 64)
@@ -56,11 +62,14 @@ func Import(path string, start int, end int, slice []structs.Star) []structs.Sta
 			log.Printf("error reading value from csv in line nr. %d (%s)", linenr, errz)
 		}
 
+		// TODO: Export the code below to its own function
+		var mass float64 = float64(10000 + rand.Intn(100000-10000))
+
 		// Create a temporary star for assembling the star
 		tempStar := structs.Star{
 			structs.Coord{X: x, Y: y, Z: z},
 			structs.Force{X: 0, Y: 0, Z: 0},
-			50000,
+			mass,
 		}
 
 		// Add the Temporary star to the slice
