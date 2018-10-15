@@ -114,16 +114,6 @@ func Slice(slice []structs.Star, path string) {
 	// draw all the stars in the given slice
 	drawStars(dc, slice)
 
-	dc.SetRGB(1, 1, 1)
-
-	// drawing the 4 big stars as bigger white dots
-	dc.DrawCircle(600, 600, 5)
-	dc.DrawCircle(-600, 600, 5)
-	dc.DrawCircle(-600, 0, 5)
-	dc.DrawCircle(600, -600, 5)
-
-	dc.Fill()
-
 	// save the plot to the given path
 	saveImage(dc, path)
 }
