@@ -7,16 +7,16 @@ package structs
 
 // Force struct soring a force vector
 type Force struct {
-	X, Y, Z float64
+	X, Y float64
 }
 
 // Coord struct storing coordinates
 type Coord struct {
-	X, Y, Z float64
+	X, Y float64
 }
 
 // Star struct storing all necessary star information
-type Star struct {
+type Star2D struct {
 	C    Coord
 	F    Force
 	Mass float64

@@ -33,8 +33,8 @@ func saveImage(dc *gg.Context, path string) {
 	dc.SavePNG(path)
 }
 
-// drawStar draws the given stars to the given context
-func drawStar(dc *gg.Context, star structs.Star) {
+// drawStar2D draws the given stars to the given context
+func drawStar2D(dc *gg.Context, star structs.Star2D) {
 	// the radius can be any value inbetween 1e4 and 1e5
 
 	// Define the default star radius as 1 and change it according to the stars mass
@@ -59,7 +59,7 @@ func vectorLength(force structs.Force) float64 {
 	return math.Sqrt(math.Pow(force.X, 2) + math.Pow(force.Y, 2))
 }
 
-func drawForce(dc *gg.Context, star structs.Star) {
+func drawForce(dc *gg.Context, star structs.Star2D) {
 	// controll the length of the vector
 	var scalingFactor float64 = 15
 
@@ -81,8 +81,7 @@ func drawForce(dc *gg.Context, star structs.Star) {
 	FyUnit := star.F.Y / math.Abs(vecLength)
 
 	dc.LineTo(star.C.X/50+(FxUnit*scalingFactor), star.C.Y/50+(FyUnit*scalingFactor))
-	// dc.LineTo(star.C.X/100 + (star.F.X * scalingFactor), star.C.Y/100 + (star.F.Y * scalingFactor))
-	//
+
 	// css
 	dc.SetLineWidth(3)
 
@@ -90,8 +89,8 @@ func drawForce(dc *gg.Context, star structs.Star) {
 	dc.Stroke()
 }
 
-// drawStars draws all the stars in the given slice to the given context
-func drawStars(dc *gg.Context, slice []structs.Star) {
+// drawStar2Ds draws all the stars in the given slice to the given context
+func drawStars2D(dc *gg.Context, slice []structs.Star2D) {
 	// draw all the forces in the given slice
 	for _, star := range slice {
 		drawForce(dc, star)
@@ -101,18 +100,18 @@ func drawStars(dc *gg.Context, slice []structs.Star) {
 
 	// draw all the stars in the given slice
 	for _, star := range slice {
-		drawStar(dc, star)
+		drawStar2D(dc, star)
 	}
 }
 
 // Slice draws the stars and the forces acting on them and saves the result to the given path
-func Slice(slice []structs.Star, path string) {
+func Slice(slice []structs.Star2D, path string) {
 
 	// initialize the plot
 	dc := initializePlot()
 
 	// draw all the stars in the given slice
-	drawStars(dc, slice)
+	drawStars2D(dc, slice)
 
 	// save the plot to the given path
 	saveImage(dc, path)

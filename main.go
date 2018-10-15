@@ -15,7 +15,7 @@ func main() {
 	var stars int = 800
 
 	// the slice starsSlice stores the star structures
-	starsSlice := []structs.Star{}
+	starsSlice := []structs.Star2D{}
 
 	logplus.LogPositive("Opening the csv")
 	starsSlice = csv.Import("data/U_ALL.csv", 0, stars, starsSlice)

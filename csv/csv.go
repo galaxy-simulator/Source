@@ -10,16 +10,16 @@ import (
 	"time"
 )
 
-// openStarCSV opens the file at the given path and reads its content. It then returns the content inform of a slice
+// openStar2DCSV opens the file at the given path and reads its content. It then returns the content inform of a slice
 // of slices
-func openStarCSV(path string) [][]string {
+func openStar2DCSV(path string) [][]string {
 
 	// Open the file located at the given path
 	b, err := os.Open(path)
 
 	// Handle errors
 	if err != nil {
-		log.Printf("openStarsCSV Panic! (cannot read file from %s)", path)
+		log.Printf("openStar2DsCSV Panic! (cannot read file from %s)", path)
 	}
 
 	// Close the file afre reading it's content
@@ -30,7 +30,7 @@ func openStarCSV(path string) [][]string {
 
 	// Handle errors
 	if err != nil {
-		log.Println("openStarsCSV Panic! (cannot read the files content)")
+		log.Println("openStar2DsCSV Panic! (cannot read the files content)")
 	}
 
 	return lines
@@ -39,8 +39,8 @@ func openStarCSV(path string) [][]string {
 // Import gets a file, a starting line, an ending line and  a struct. It then adds the content of the file to the struct
 // For finding the length of the .csv, you can use the following command in linux:
 // $ cat <csv> | wc -l
-func Import(path string, start int, end int, slice []structs.Star) []structs.Star {
-	lines := openStarCSV(path)
+func Import(path string, start int, end int, slice []structs.Star2D) []structs.Star2D {
+	lines := openStar2DCSV(path)
 
 	// seed the random number generator
 	rand.Seed(time.Now().UTC().UnixNano())
@@ -49,7 +49,6 @@ func Import(path string, start int, end int, slice []structs.Star) []structs.Sta
 	for linenr, line := range lines[start:end] {
 		x, errx := strconv.ParseFloat(line[0], 64)
 		y, erry := strconv.ParseFloat(line[1], 64)
-		z, errz := strconv.ParseFloat(line[2], 64)
 
 		// Handle errors
 		if errx != nil {
@@ -58,22 +57,19 @@ func Import(path string, start int, end int, slice []structs.Star) []structs.Sta
 		if erry != nil {
 			log.Printf("error reading value from csv in line nr. %d (%s)", linenr, erry)
 		}
-		if errz != nil {
-			log.Printf("error reading value from csv in line nr. %d (%s)", linenr, errz)
-		}
 
 		// TODO: Export the code below to its own function
 		var mass float64 = float64(10000 + rand.Intn(100000-10000))
 
 		// Create a temporary star for assembling the star
-		tempStar := structs.Star{
-			structs.Coord{X: x, Y: y, Z: z},
-			structs.Force{X: 0, Y: 0, Z: 0},
+		tempStar2D := structs.Star2D{
+			structs.Coord{X: x, Y: y},
+			structs.Force{X: 0, Y: 0},
 			mass,
 		}
 
 		// Add the Temporary star to the slice
-		slice = append(slice, tempStar)
+		slice = append(slice, tempStar2D)
 
 	}
 
