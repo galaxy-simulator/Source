@@ -13,22 +13,19 @@ import (
 func main() {
 	logplus.SetLogLevel(logplus.LevelAll)
 	var threads int = 8
-	var path1 string = "out_0.png"
 	var frames int = 1
+	var rangeStart int = 0
+	var rangeEnd int = 25000
 
 	// the slice starsSlice stores the star structures
 	starsSlice := []structs.Star2D{
-		//		{C: structs.Vec2{X:  30000,  Y: 30000},M: 5E8},
-		//		{C: structs.Vec2{X: -30000,  Y: 30000},M: 5E8},
-		//		{C: structs.Vec2{X: -30000           },M: 5E8},
-		//		{C: structs.Vec2{X:  30000, Y: -30000},M: 5E8},
 		{C: structs.Vec2{}, M: 5E8},
 	}
 
 	logplus.LogNeutral("Opening the csv")
-	starsSlice = csv.Import("data/U_ALL.csv", 0, 25000, starsSlice)
+	starsSlice = csv.Import("data/U_ALL.csv", rangeStart, rangeEnd, starsSlice)
 
-	// Simulate the position of the stars after a specific time
+	// Simulate frames
 	for i := 0; i < frames; i++ {
 		logplus.LogPositive("--- --- --- --- ---")
 		logplus.LogPositive(fmt.Sprintf("Frames %d/%d", i, frames))
