@@ -35,24 +35,29 @@ func saveImage(dc *gg.Context, path string) {
 
 // drawStar draws the given stars to the given context
 func drawStar(dc *gg.Context, star structs.Star2D) {
+	// User the value below to controll how big the stars are overall
+	var StarScalingFactor float64 = 1
 
-	// set radius of the star to 2
-	R := 2.0
+	// Default Star Size
+	S := 2.0
 
-	// if the star has a greater mass than the default 5E4, it's radius is increased to 5
-	if star.M > 5E4 {
-		R = 5
+	// Calculate the Stars Size according to its Mass (Maximal size = 5)
+	if star.M < 5e4 {
+		S = float64(math.Ceil(star.M/4e4) * StarScalingFactor)
+	} else {
+		S = 5.0
 	}
 
 	// draw the star / point
-	dc.DrawPoint(star.C.X/50, star.C.Y/50, R)
+	dc.DrawPoint(star.C.X/50, star.C.Y/50, S)
 	dc.Fill()
 	dc.Stroke()
 }
 
 func drawVelocity(dc *gg.Context, star structs.Star2D) {
 	// scaling factor for a better view of the velocity difference
-	var scalingFactor float64 = 15
+	// Use this value to control how long the vectors are drawn
+	var scalingFactor float64 = 25
 
 	// Move the "cursor" to the start position of the vector
 	dc.MoveTo(star.C.X/50, star.C.Y/50)
