@@ -21,13 +21,12 @@ func accelerationActing(s1 structs.Star2D, s2 structs.Star2D) structs.Vec2 {
 	// the distance between the stars
 	var deltaR = r12.GetLength()
 
-	// the scalar acceleration of star s1 by star s2
+	// Define the vector components (scalar and direction)
 	scalarA := G * (s2.M) / math.Pow(deltaR, 2)
-
-	// calculate the direction vector of the vector from s1 to s2
 	directionVectorA := r12.GetDirVector()
 
-	// the vector acceleration of scalarA
+	// Combine the sacalar and the firection vector resulting in a vector defining the
+	// acceleration of the star
 	A := directionVectorA.Multiply(scalarA)
 
 	return A
@@ -36,7 +35,9 @@ func accelerationActing(s1 structs.Star2D, s2 structs.Star2D) structs.Vec2 {
 // accelerations calculates the acceleration acting in between a given star and all the other stars in a given array.
 func accelerations(stars_arr []structs.Star2D, nr int) structs.Vec2 {
 
-	var a = /*acceleration*/ structs.Vec2{}
+	// Acceleration structure
+	var accelerationStructure = structs.Vec2{}
+
 	// Iterate over all the stars in the stars_arr
 	for index := range stars_arr {
 
@@ -45,18 +46,17 @@ func accelerations(stars_arr []structs.Star2D, nr int) structs.Vec2 {
 
 			// calculate the acceleration and add it to the overall acceleration of the star
 			aa := accelerationActing(stars_arr[nr], stars_arr[index])
-			a = a.Add(aa)
+			accelerationStructure = accelerationStructure.Add(aa)
 
 		}
 	}
 
-	return a
+	return accelerationStructure
 }
 
 // accelerationThread calculates the acceleration acting on a given amount of stars in a given range for a given slice of stars
 // as a go-routine
 func accelerationThread(starSlice []structs.Star2D, localRangeStart int, localRangeEnd int, channel chan structs.Star2D) {
-
 	// iterate over the given range
 	for index := localRangeStart; index < localRangeEnd; index++ {
 
@@ -95,8 +95,6 @@ func CalcAllAccelerations(starSlice []structs.Star2D, threads int) []structs.Sta
 		// define the local range
 		localRangeStart := i * localRangeLen
 		localRangeEnd := (i * localRangeLen) + localRangeLen
-
-		// fmt.Printf("starting worker nr. %d, processing %d stars\n", i, localRangeEnd-localRangeStart)
 
 		// calculate the accelerations for all the stars in the given slice in the given range and return them using the
 		// given channel
