@@ -4,6 +4,7 @@ import (
 	"../file"
 	"../structs"
 	"git.darknebu.la/bit/logplus"
+	"math/rand"
 	"strconv"
 )
 
@@ -29,7 +30,7 @@ func Import(path string, start int, end int, slice []structs.Star2D) []structs.S
 		// Create a temporary star for assembling the star
 		tempStar := structs.Star2D{
 			C: structs.Vec2{X: x, Y: y},
-			M: 50000,
+			M: float64(rand.Intn(50000)),
 		}
 
 		// Add the Temporary star to the slice
