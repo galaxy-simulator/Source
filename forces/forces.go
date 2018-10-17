@@ -55,7 +55,7 @@ func accelerations(stars_arr []structs.Star2D, nr int) structs.Vec2 {
 }
 
 // accelerationThread calculates the acceleration acting on a given amount of stars in a given range for a given slice of stars
-// as a go-routine
+// utilizing go-methods
 func accelerationThread(starSlice []structs.Star2D, localRangeStart int, localRangeEnd int, channel chan structs.Star2D) {
 	// iterate over the given range
 	for index := localRangeStart; index < localRangeEnd; index++ {
@@ -75,13 +75,13 @@ func accelerationThread(starSlice []structs.Star2D, localRangeStart int, localRa
 // CalcAllAccelerations calculates all the accelerations acting in between all the stars in the given starSlice slice and
 // returns a "new" slice containing the stars with their new velocities
 func CalcAllAccelerations(starSlice []structs.Star2D, threads int) []structs.Star2D {
-	// create a channel for bundling the stars generated in the go-routines
+	// create a channel for bundling the stars generated in the go-methods
 	channel := make(chan structs.Star2D, 1000)
 
 	sliceLength := len(starSlice)
 
 	// calculate the local range
-	// Example: 100 stars with 4 threads = 25 stars / thread
+	// Example: 100 stars with 4 threads = 25 stars per thread
 	localRangeLen := sliceLength / threads
 
 	// generate a new slice for storing the stars
@@ -89,7 +89,7 @@ func CalcAllAccelerations(starSlice []structs.Star2D, threads int) []structs.Sta
 
 	logplus.LogNeutral(fmt.Sprintf("Starting %d workers, each processing %d stars", threads, localRangeLen))
 
-	// start n go threads
+	// start n go-methods each covering a part of the whole slice
 	for i := 0; i < threads; i++ {
 
 		// define the local range

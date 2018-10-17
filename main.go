@@ -15,7 +15,7 @@ func main() {
 	var threads int = 8
 	var frames int = 1
 	var rangeStart int = 0
-	var rangeEnd int = 25000
+	var rangeEnd int = 5000
 
 	// the slice starsSlice stores the star structures
 	starsSlice := []structs.Star2D{
