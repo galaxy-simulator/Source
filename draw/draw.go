@@ -9,8 +9,8 @@ import (
 // initializePlot generates a new plot and returns the plot context
 func initializePlot() *gg.Context {
 	// Define the image size
-	const imageWidth = 8192
-	const imageHeight = 8192
+	const imageWidth = 8192 * 2
+	const imageHeight = 8192 * 2
 
 	// Initialize the new context
 	dc := gg.NewContext(imageWidth, imageHeight)
