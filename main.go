@@ -1,10 +1,10 @@
 package main
 
 import (
-	"./csv"
-	"./draw"
-	"./forces"
-	"./structs"
+	"git.darknebu.la/GalaxySimulator/Source/csv"
+	"git.darknebu.la/GalaxySimulator/Source/draw"
+	"git.darknebu.la/GalaxySimulator/Source/forces"
+	"git.darknebu.la/GalaxySimulator/Source/structs"
 	"fmt"
 	"git.darknebu.la/bit/logplus"
 	"math"

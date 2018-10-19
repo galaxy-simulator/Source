@@ -1,8 +1,8 @@
 package csv
 
 import (
-	"../file"
-	"../structs"
+	"git.darknebu.la/GalaxySimulator/Source/file"
+	"git.darknebu.la/GalaxySimulator/Source/structs"
 	"git.darknebu.la/bit/logplus"
 	"math/rand"
 	"strconv"

@@ -1,7 +1,7 @@
 package forces
 
 import (
-	"../structs"
+	"git.darknebu.la/GalaxySimulator/Source/structs"
 	"fmt"
 	"git.darknebu.la/bit/logplus"
 	"gopkg.in/cheggaaa/pb.v1"

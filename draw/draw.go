@@ -1,7 +1,7 @@
 package draw
 
 import (
-	"../structs"
+	"git.darknebu.la/GalaxySimulator/Source/structs"
 	"github.com/fogleman/gg"
 	"math"
 )
