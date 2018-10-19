@@ -15,12 +15,10 @@ func main() {
 	var threads int = 8
 	var frames int = 1
 	var rangeStart int = 0
-	var rangeEnd int = 5000
+	var rangeEnd int = 50000
 
 	// the slice starsSlice stores the star structures
-	starsSlice := []structs.Star2D{
-		{C: structs.Vec2{}, M: 5E8},
-	}
+	starsSlice := []structs.Star2D{}
 
 	logplus.LogNeutral("Opening the csv")
 	starsSlice = csv.Import("data/U_ALL.csv", rangeStart, rangeEnd, starsSlice)
@@ -36,8 +34,9 @@ func main() {
 		logplus.LogNeutral("Calculate the acting accelerations")
 		starsSlice = forces.CalcAllAccelerations(starsSlice, threads)
 
-		outputName := fmt.Sprintf("out_%d.png", i+1)
+		outputName := fmt.Sprintf("out_%d.png", i+3)
 		logplus.LogNeutral(fmt.Sprintf("draw the slice and save it to %s\n", outputName))
 		draw.Slice(starsSlice, outputName)
+
 	}
 }

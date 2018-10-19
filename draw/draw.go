@@ -36,14 +36,14 @@ func saveImage(dc *gg.Context, path string) {
 // drawStar draws the given stars to the given context
 func drawStar(dc *gg.Context, star structs.Star2D) {
 	// User the value below to controll how big the stars are overall
-	var StarScalingFactor float64 = 1
+	var starScalingFactor = 50.0
 
 	// Default Star Size
 	S := 2.0
 
 	// Calculate the Stars Size according to its Mass (Maximal size = 5)
 	if star.M < 5e4 {
-		S = float64(math.Ceil(star.M/4e4) * StarScalingFactor)
+		S = float64(math.Ceil(math.Sqrt(star.M)) / starScalingFactor)
 	} else {
 		S = 5.0
 	}
@@ -110,12 +110,6 @@ func Slice(slice []structs.Star2D, path string) {
 	drawStars(dc, slice)
 
 	dc.SetRGB(1, 1, 1)
-
-	// drawing the 4 big stars as bigger white dots
-	//dc.DrawCircle(600, 600, 5)
-	//dc.DrawCircle(-600, 600, 5)
-	//dc.DrawCircle(-600, 0, 5)
-	//dc.DrawCircle(600, -600, 5)
 
 	dc.Fill()
 
