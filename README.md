@@ -1,4 +1,5 @@
 # Source
+[![GoDoc](https://godoc.org/git.darknebu.la/GalaxySimulator/Source/structs?status.svg)](https://godoc.org/git.darknebu.la/GalaxySimulator/Source/structs)
 
 ## Example Image
 
