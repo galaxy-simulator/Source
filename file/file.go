@@ -13,7 +13,7 @@ type File struct {
 func Open(path string) (File, error) {
 	file, err := os.Open(path)
 	if err != nil {
-		logplus.LogFError("openStarsCSV Panic! (cannot read file from %s)", path)
+		logplus.LogErrorf("openStarsCSV Panic! (cannot read file from %s)\n", path)
 	}
 	return File{f: file}, err
 }
@@ -21,7 +21,7 @@ func Open(path string) (File, error) {
 func (file *File) ReadCSV() ([][]string, error) {
 	lines, err := csv.NewReader(file.f).ReadAll()
 	if err != nil {
-		logplus.LogError("openStarsCSV Panic! (cannot read the files content)")
+		logplus.LogErrorf("openStarsCSV Panic! (cannot read the files content)\n")
 	}
 	return lines, err
 }
