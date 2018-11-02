@@ -109,10 +109,6 @@ func Slice(slice []structs.Star2D, path string) {
 	// draw all the stars in the given slice
 	drawStars(dc, slice)
 
-	dc.SetRGB(1, 1, 1)
-
-	dc.Fill()
-
 	// save the plot to the given path
 	saveImage(dc, path)
 }
