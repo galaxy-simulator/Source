@@ -21,10 +21,10 @@ func Import(path string, start int, end int, slice []structs.Star2D) []structs.S
 
 		// Handle errors
 		if errx != nil {
-			logplus.LogFError("error reading value from csv in line nr. %d (%s)", linenr, errx)
+			logplus.LogErrorf("error reading value from csv in line nr. %d (%s)", linenr, errx)
 		}
 		if erry != nil {
-			logplus.LogFError("error reading value from csv in line nr. %d (%s)", linenr, erry)
+			logplus.LogErrorf("error reading value from csv in line nr. %d (%s)", linenr, erry)
 		}
 
 		// Create a temporary star for assembling the star
