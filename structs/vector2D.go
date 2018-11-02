@@ -8,6 +8,14 @@ type Vec2 struct {
 	X, Y float64
 }
 
+// newVec2 returns a new Vec2 using the given coordinates
+func newVec2(x float64, y float64) *Vec2 {
+	return &Vec2{
+		X: x,
+		Y: y,
+	}
+}
+
 // creates a copy of the vector
 func (v *Vec2) Copy() Vec2 {
 	return Vec2{v.X, v.Y}
