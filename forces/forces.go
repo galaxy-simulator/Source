@@ -1,14 +1,14 @@
 package forces
 
 import (
-	"git.darknebu.la/GalaxySimulator/Source/structs"
 	"fmt"
+	"git.darknebu.la/GalaxySimulator/Source/structs"
 	"git.darknebu.la/bit/logplus"
 	"gopkg.in/cheggaaa/pb.v1"
 	"math"
 )
 
-// forces_acting calculates the force inbetween the two given stars s1 and s2
+// forces_acting calculates the force in between the two given stars s1 and s2
 // The function return the force
 func accelerationActing(s1 structs.Star2D, s2 structs.Star2D) structs.Vec2 {
 
@@ -59,6 +59,15 @@ func accelerations(stars_arr []structs.Star2D, nr int) structs.Vec2 {
 func accelerationThread(starSlice []structs.Star2D, localRangeStart int, localRangeEnd int, channel chan structs.Star2D) {
 	// iterate over the given range
 	for index := localRangeStart; index < localRangeEnd; index++ {
+
+		/*
+			TODO: Genrate an Octree:
+			In the first step, all the stars are inside of one big cell that is subdivided recursively.
+			A cell is subdivided as long as none of the exit conditions has been met:
+				1. The Cell contains fewer than a given number of stars
+				2. The Cell reaches a minimum size
+				3. When a maximum number of subdivisions has been reached
+		*/
 
 		// Calculate the acceleration acting inbetween the given star and all other stars
 		var a = accelerations(starSlice, index)
