@@ -3,14 +3,13 @@ package forces
 import (
 	"fmt"
 	"git.darknebu.la/GalaxySimulator/Source/structs"
-	"git.darknebu.la/bit/logplus"
 	"gopkg.in/cheggaaa/pb.v1"
 	"math"
 )
 
 // forces_acting calculates the force in between the two given stars s1 and s2
 // The function return the force
-func accelerationActing(s1 structs.Star2D, s2 structs.Star2D) structs.Vec2 {
+func AccelerationActing(s1 structs.Star2D, s2 structs.Star2D) structs.Vec2 {
 
 	// Gravitational constant
 	var G = 6.674E-11
@@ -21,13 +20,19 @@ func accelerationActing(s1 structs.Star2D, s2 structs.Star2D) structs.Vec2 {
 	// the distance between the stars
 	var deltaR = r12.GetLength()
 
-	// Define the vector components (scalar and direction)
 	scalarA := G * (s2.M) / math.Pow(deltaR, 2)
 	directionVectorA := r12.GetDirVector()
 
 	// Combine the sacalar and the firection vector resulting in a vector defining the
 	// acceleration of the star
 	A := directionVectorA.Multiply(scalarA)
+
+	if math.IsNaN(A.X) {
+		A.X = 0
+	}
+	if math.IsNaN(A.Y) {
+		A.Y = 0
+	}
 
 	return A
 }
@@ -45,7 +50,7 @@ func accelerations(stars_arr []structs.Star2D, nr int) structs.Vec2 {
 		if index != nr {
 
 			// calculate the acceleration and add it to the overall acceleration of the star
-			aa := accelerationActing(stars_arr[nr], stars_arr[index])
+			aa := AccelerationActing(stars_arr[nr], stars_arr[index])
 			accelerationStructure = accelerationStructure.Add(aa)
 
 		}
@@ -84,6 +89,8 @@ func accelerationThread(starSlice []structs.Star2D, localRangeStart int, localRa
 // CalcAllAccelerations calculates all the accelerations acting in between all the stars in the given starSlice slice and
 // returns a "new" slice containing the stars with their new velocities
 func CalcAllAccelerations(starSlice []structs.Star2D, threads int) []structs.Star2D {
+	fmt.Println("Calculate all the acceletarions")
+
 	// create a channel for bundling the stars generated in the go-methods
 	channel := make(chan structs.Star2D, 1000)
 
@@ -96,7 +103,7 @@ func CalcAllAccelerations(starSlice []structs.Star2D, threads int) []structs.Sta
 	// generate a new slice for storing the stars
 	var newSlice []structs.Star2D
 
-	logplus.LogNeutral(fmt.Sprintf("Starting %d workers, each processing %d stars", threads, localRangeLen))
+	//logplus.LogNeutral(fmt.Sprintf("Starting %d workers, each processing %d stars", threads, localRangeLen))
 
 	// start n go-methods each covering a part of the whole slice
 	for i := 0; i < threads; i++ {
