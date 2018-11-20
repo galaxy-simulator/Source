@@ -1,0 +1,7 @@
+{
+  "Frames": 1,
+  "RangeStart": 0,
+  "RangeEnd": 1000,
+  "LoadPath": "data/U_ALL.csv",
+  "OutPath": "out_%d.csv"
+}
