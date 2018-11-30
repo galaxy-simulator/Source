@@ -32,7 +32,41 @@ func main() {
 	fmt.Printf("and writing the results to %s.\n", config.OutPath)
 
 	// the slice starsSlice stores the star structures
-	starsSlice := []structs.Star2D{}
+	starsSlice := []structs.Star2D{
+		structs.Star2D{
+			C: structs.Vec2{
+				X: -1e5,
+				Y: 0,
+			},
+			V: structs.Vec2{
+				X: 0,
+				Y: 0,
+			},
+			M: 1e10,
+		},
+		structs.Star2D{
+			C: structs.Vec2{
+				X: 1e5,
+				Y: 0,
+			},
+			V: structs.Vec2{
+				X: 0,
+				Y: 0,
+			},
+			M: 1e10,
+		},
+		structs.Star2D{
+			C: structs.Vec2{
+				X: 0,
+				Y: 4e4,
+			},
+			V: structs.Vec2{
+				X: 0,
+				Y: 0,
+			},
+			M: 1e10,
+		},
+	}
 	starsSlice = csv.Import(config.LoadPath, config.RangeStart, config.RangeEnd, starsSlice)
 
 	fmt.Println("Done loading the data")

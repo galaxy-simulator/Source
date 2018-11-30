@@ -1,6 +1,7 @@
 package draw
 
 import (
+	"fmt"
 	"git.darknebu.la/GalaxySimulator/Source/structs"
 	"github.com/fogleman/gg"
 	"math"
@@ -9,8 +10,8 @@ import (
 // initializePlot generates a new plot and returns the plot context
 func initializePlot() *gg.Context {
 	// Define the image size
-	const imageWidth = 8192 * 2
-	const imageHeight = 8192 * 2
+	const imageWidth = 8192
+	const imageHeight = 8192
 
 	// Initialize the new context
 	dc := gg.NewContext(imageWidth, imageHeight)
@@ -57,7 +58,7 @@ func drawStar(dc *gg.Context, star structs.Star2D) {
 func drawVelocity(dc *gg.Context, star structs.Star2D) {
 	// scaling factor for a better view of the velocity difference
 	// Use this value to control how long the vectors are drawn
-	var scalingFactor float64 = 25
+	var scalingFactor float64 = 50
 
 	// Move the "cursor" to the start position of the vector
 	dc.MoveTo(star.C.X/50, star.C.Y/50)
@@ -67,7 +68,8 @@ func drawVelocity(dc *gg.Context, star structs.Star2D) {
 
 	// Use a sigmoid function to generate useful values for coloring the vectors according to their
 	// strength
-	var val = 1.0 / (1.0 + math.Exp(-vecLength*scalingFactor/2))
+	var val = 1.0 / (1.0 + math.Exp(-vecLength*scalingFactor/2 * 1e8))
+	fmt.Println(val)
 
 	// Set the color to a blue / red
 	dc.SetRGB(val, 0, 1-val)
