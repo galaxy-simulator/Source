@@ -1,7 +1,8 @@
 {
   "Frames": 1,
+  "Threads": 8,
   "RangeStart": 0,
-  "RangeEnd": 1000,
+  "RangeEnd": 10000,
   "LoadPath": "data/U_ALL.csv",
   "OutPath": "out_%d.csv"
 }
