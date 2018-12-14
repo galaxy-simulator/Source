@@ -1,7 +1,6 @@
 package draw
 
 import (
-	"fmt"
 	"git.darknebu.la/GalaxySimulator/Source/structs"
 	"github.com/fogleman/gg"
 	"math"
@@ -10,8 +9,8 @@ import (
 // initializePlot generates a new plot and returns the plot context
 func initializePlot() *gg.Context {
 	// Define the image size
-	const imageWidth = 8192
-	const imageHeight = 8192
+	const imageWidth = 8192 * 2
+	const imageHeight = 8192 * 2
 
 	// Initialize the new context
 	dc := gg.NewContext(imageWidth, imageHeight)
@@ -68,8 +67,7 @@ func drawVelocity(dc *gg.Context, star structs.Star2D) {
 
 	// Use a sigmoid function to generate useful values for coloring the vectors according to their
 	// strength
-	var val = 1.0 / (1.0 + math.Exp(-vecLength*scalingFactor/2 * 1e8))
-	fmt.Println(val)
+	var val = 1.0 / (1.0 + math.Exp(-vecLength*scalingFactor/2*1e8))
 
 	// Set the color to a blue / red
 	dc.SetRGB(val, 0, 1-val)
@@ -81,7 +79,7 @@ func drawVelocity(dc *gg.Context, star structs.Star2D) {
 	dc.LineTo(star.C.X/50+(FUnit.X*scalingFactor), star.C.Y/50+(FUnit.Y*scalingFactor))
 
 	// set line width
-	dc.SetLineWidth(3)
+	dc.SetLineWidth(5)
 
 	// And finally: DRAW (stroke) the vector
 	dc.Stroke()

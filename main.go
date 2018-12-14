@@ -4,10 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"git.darknebu.la/GalaxySimulator/Source/csv"
-	"git.darknebu.la/GalaxySimulator/Source/draw"
-	"git.darknebu.la/GalaxySimulator/Source/forces"
 	"git.darknebu.la/GalaxySimulator/Source/structs"
-	"math"
 	"os"
 )
 
@@ -24,11 +21,11 @@ func main() {
 	// Load the config
 	var config Config = LoadConfiguration("config.json")
 
-	fmt.Printf("[+] Utilizing %d threads ", config.Threads)
+	fmt.Printf("[ ] Utilizing %d threads ", config.Threads)
 	fmt.Printf("for drawing %d Frames, ", config.Frames)
 	fmt.Printf("each containing %d Stars.\n", config.RangeEnd)
 
-	fmt.Printf("[+] Getting previously existing Stars from %s ", config.LoadPath)
+	fmt.Printf("[ ] Getting previously existing Stars from %s ", config.LoadPath)
 	fmt.Printf("and writing the results to %s.\n", config.OutPath)
 
 	// the slice starsSlice stores the star structures
@@ -67,23 +64,46 @@ func main() {
 			M: 1e10,
 		},
 	}
-	starsSlice = csv.Import(config.LoadPath, config.RangeStart, config.RangeEnd, starsSlice)
 
-	fmt.Println("Done loading the data")
+	// import existing stars from a csv
+	// generate new stars in a homogeneous grid
 
-	// Simulate frames
+	starsSlice = csv.GenerateHomogeneousGrid(starsSlice, -5e5, 5e5, 1e5)
+	fmt.Printf("Amount of Stars: %d\n", len(starsSlice))
+	//starsSlice = csv.Import(config.LoadPath, config.RangeStart, config.RangeEnd, starsSlice)
+
+	fmt.Println("[+] Done loading the data.")
+
+	// Iterate over all the frames
 	for i := 0; i < config.Frames; i++ {
-		fmt.Println("Calculating the frame")
+		fmt.Printf("[ ] Frame %d\n", i)
 
-		starsSlice = forces.NextTimestep(starsSlice, 25*math.Pow(10, 4+7))
-		starsSlice = forces.CalcAllAccelerations(starsSlice, config.Threads)
+		// Create a new quadtree
+		boundary := *structs.NewBoundingBox(structs.Vec2{0, 0}, 1e8)
+		starsQuadtree := *structs.NewQuadtree(boundary)
 
-		fmt.Println("Done Calculating")
+		// Print all the elements in the stars Slice
+		for _, element := range starsSlice {
+			fmt.Println(element)
+		}
+
+		// Insert all the stars from the starsSlice into the Quadtree
+		//starQuadtree := quadtree.InsertSlice(starsSlice)
+
+		//starsSlice = forces.NextTimestep(starsSlice, 25*math.Pow(10, 4+7))
+		//starsSlice = forces.CalcAllAccelerations(starsSlice, config.Threads)
+		//var starsQuadtree quadtree.Quadtree = quadtree.CreateWithSlice(starsSlice)
+		//quadtree.Print(&starsQuadtree)
+		//quadtree.Draw(&starsQuadtree)
+		//quadtree.DrawQuadtree(starsQuadtree)
+
+		fmt.Println("[+] Done Calculating the forces acting.")
 
 		// draw the galaxy
-		outputName := fmt.Sprintf("out_%d.png", i+4)
-		draw.Slice(starsSlice, outputName)
-		fmt.Println("Done drawing all the stars")
+		//fmt.Println("[ ] Drawing the Stars")
+		//outputName := fmt.Sprintf("out_%d.png", i+4)
+		//draw.Slice(starsSlice, outputName)
+		//fmt.Println("[+] Done drawing all the stars")
 	}
 }
 
@@ -106,7 +126,10 @@ func LoadConfiguration(file string) Config {
 
 	// Parsing the content and adding it to the config struct
 	jsonParser := json.NewDecoder(configFile)
-	jsonParser.Decode(&config)
+	err := jsonParser.Decode(&config)
+	if err != nil {
+		panic(err)
+	}
 
 	// Returning the config for further use
 	return config

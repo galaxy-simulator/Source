@@ -40,3 +40,25 @@ func Import(path string, start int, end int, slice []structs.Star2D) []structs.S
 
 	return slice
 }
+
+// Generate a homogeneous Grid
+func GenerateHomogeneousGrid(slice []structs.Star2D, left int, right int, step int) []structs.Star2D {
+
+	// Iterate over a grid
+	for i := left; i < right; i += step {
+		for j := left; j < right; j += step {
+
+			// generate a new star with the coordinates
+			tempStar := structs.Star2D{
+				C: structs.Vec2{X: float64(i) + float64(rand.Intn(step)), Y: float64(j) + float64(rand.Intn(step))},
+				M: float64(rand.Intn(500000)),
+			}
+
+			// add the star to the slice
+			slice = append(slice, tempStar)
+		}
+	}
+
+	// return the new slice containing a homogeneous grid of stars
+	return slice
+}

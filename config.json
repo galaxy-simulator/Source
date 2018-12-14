@@ -2,7 +2,7 @@
   "Frames": 1,
   "Threads": 8,
   "RangeStart": 0,
-  "RangeEnd": 5000,
+  "RangeEnd": 50000,
   "LoadPath": "data/U_ALL.csv",
   "OutPath": "out_%d.csv"
 }
