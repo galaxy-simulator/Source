@@ -3,7 +3,7 @@
 
 ## Example Image
 
-![Example Image](https://git.darknebu.la/GalaxySimulator/Source/raw/master/example_image_cropped.png)
+![Example Image](./example_image_cropped.png)
 
 ## Building
 
